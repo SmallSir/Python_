@@ -2,10 +2,15 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import traceback
+import time
+import numpy as np
 
+
+#修改请求头文件，避免封IP
+hds=[{'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'},{'User-Agent':'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.12 Safari/535.11'},{'User-Agent': 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)'}]
 def getHTMLText(url):#参数为页面
     try:
-        r = requests.get(url, timeout = 30)
+        r = requests.get(url, timeout = 30,headers=hds[np.random.randint(0,len(hds))])
         r.raise_for_status()
         r.encoding = r.apparent_encoding
         return r.text
@@ -26,7 +31,16 @@ def getStockList(lst, stockURL):#参数为存取股票代码列表,以及股票�
 
 def getStockInfo(lst, stockURL, fpath):#参数为存取股票列表，股票信息网站，以及股票信息存储位置
     count = 0
+    sum = 0
     for s in lst:
+        '''
+        sum = sum + 1
+        if sum < 90:
+            continue
+        if sum == 200:
+            break
+            '''
+        #time.sleep(np.random.rand() * 2)
         url = stockURL + s + ".html"
         html = getHTMLText(url)
         try:
@@ -35,8 +49,11 @@ def getStockInfo(lst, stockURL, fpath):#参数为存取股票列表，股票信�
             soup = BeautifulSoup(html, 'html.parser')
             StockDict = {}
             stockInfo = soup.find('div', attrs = {'class':'bets-content'})
-            name = stockInfo.find_all(attr={'class':'bets-name'})[0]
-            StockDict.update({'股票信息':name.text.split()[0]})
+            try:
+                name = soup.find_all(attrs={'class':'bets-name'})[0].text.split()[0]
+            except IndexError:
+                continue
+            StockDict.update({'股票信息':name})
             keyList = stockInfo.find_all('dt')
             valueList = stockInfo.find_all('dd')
             for i in range(len(keyList)):
