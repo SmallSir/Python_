@@ -32,14 +32,12 @@ def getStockList(lst, stockURL):#参数为存取股票代码列表,以及股票�
 def getStockInfo(lst, stockURL, fpath):#参数为存取股票列表，股票信息网站，以及股票信息存储位置
     count = 0
     sum = 0
-    for s in lst:
-        '''
+    for s in lst:#对于sum这一块的代码主要是计算存入多少个，前90个股票存在问题，不考虑
         sum = sum + 1
         if sum < 90:
             continue
-        if sum == 200:
+        if sum >= 100:
             break
-            '''
         #time.sleep(np.random.rand() * 2)
         url = stockURL + s + ".html"
         html = getHTMLText(url)
@@ -53,14 +51,14 @@ def getStockInfo(lst, stockURL, fpath):#参数为存取股票列表，股票信�
                 name = soup.find_all(attrs={'class':'bets-name'})[0].text.split()[0]
             except IndexError:
                 continue
-            StockDict.update({'股票信息':name})
-            keyList = stockInfo.find_all('dt')
-            valueList = stockInfo.find_all('dd')
+            StockDict.update({'股票信息':name})#将获取到的股票名字先存下来
+            keyList = stockInfo.find_all('dt')#获得该股票的信息名称
+            valueList = stockInfo.find_all('dd')#获得该股票的信息的详细资料
             for i in range(len(keyList)):
                 key = keyList[i].text
-                value = keyList[i].text
+                value = valueList[i].text
                 StockDict[key] = value
-            with open(fpath, 'a',encoding='utf-8') as f:
+            with open(fpath, 'a',encoding='utf-8') as f:#将信息存到文件中
                 f.write(str(StockDict) + '\n')
                 count = count + 1
                 print("\r当前进度:{:.2f}%".format(count*100/len(lst)))
