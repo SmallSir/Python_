@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+
+# Define your item pipelines here
+#
+# Don't forget to add your pipeline to the ITEM_PIPELINES setting
+# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
+
+class GetipPipeline(object):
+    def process_item(self, item, spider):
+        filename = 'ip.txt'
+        with open(filename,'a') as fp:
+            fp.write(item['ip'].strip() + '\t')
+            fp.write(item['port'].strip() + '\t')
+            fp.write(item['protocol'].strip() + '\t')
+            fp.write('\n')
+        return item

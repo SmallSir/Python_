@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for weather project
+# Scrapy settings for getip project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'weather'
+BOT_NAME = 'getip'
 
-SPIDER_MODULES = ['weather.spiders']
-NEWSPIDER_MODULE = 'weather.spiders'
+SPIDER_MODULES = ['getip.spiders']
+NEWSPIDER_MODULE = 'getip.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'weather (+http://www.yourdomain.com)'
+#USER_AGENT = 'getip (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'weather.middlewares.WeatherSpiderMiddleware': 543,
+#    'getip.middlewares.GetipSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'weather.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'getip.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
+USER_AGENT = 'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
 ITEM_PIPELINES = {
-    'weather.pipelines.WeatherPipeline': 1,
-    'weather.pipeline2json.WeatherPipeline':1,
+    'getip.pipelines.GetipPipeline': 1,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
