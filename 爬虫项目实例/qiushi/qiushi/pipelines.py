@@ -20,7 +20,7 @@ class QiushiPipeline(object):
         with open(fileName,'a') as fp:
             fp.write('-'*50+'\n' + '*'*50 + '\n')
             fp.write("author:\t %s\n" %(item['author']))
-            fp.write("content:\t %s\n"%item['content'])
+            fp.write("content:\t %s\n"%(item['content']))
             try:
                 imgURL = item['img'][1]
             except IndexError:
