@@ -10,8 +10,6 @@ class GetipPipeline(object):
     def process_item(self, item, spider):
         filename = 'ip.txt'
         with open(filename,'a') as fp:
-            fp.write(item['ip'].strip() + '\t')
-            fp.write(item['port'].strip() + '\t')
-            fp.write(item['protocol'].strip() + '\t')
+            fp.write("'"+item['ip'].strip() + ':' + item['port'].strip() + "'")
             fp.write('\n')
         return item

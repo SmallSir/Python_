@@ -16,5 +16,6 @@ class IpdlSpider(scrapy.Spider):
             item['ip'] = sub.css('td::text').extract()[0]
             item['port'] = sub.css('td::text').extract()[1]
             item['protocol'] = sub.css('td::text').extract()[5]
-            items.append(item)
+            if(item['protocol'] == 'HTTP'):
+                items.append(item)
         return items
