@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
-import requests
 import urllib.request
 import codecs
+import requests
 import time
 import resource
 import random
+import urllib.parse
 from mylog import MyLog as mylog
 
 class Item(object):
@@ -32,19 +33,20 @@ class getMvList(object):
                 self.log.info(u'添加URL:%s 到URLS' %url)
             self.spider(area,urls)
     def getRseponseContent(self,url):
-        fakeHeaders = {'User-Agent': self.getRandomHeaders()}
-        request = urllib.request.Request(url.encode('utf8'),headers = fakeHeaders)
-        proxy = urllib.request.ProxyHandler({'http':'http://'  + self.getRandomProxy()})
+        proxy = urllib.request.ProxyHandler({'http':'http://' + self.getRandomProxy()})
         opener = urllib.request.build_opener(proxy)
         urllib.request.install_opener(opener)
         try:
-            response = urllib.request.urlopen(request)
+            res = requests.get(url, timeout=30, headers={'User-Agent': self.getRandomHeaders()})
+            res.raise_for_status()
+            res.encoding = res.apparent_encoding
+        #print(response.read().decode("utf-8"))
             time.sleep(1)
         except:
-            self.log.error(u'Python 返回URL：%s 数据失败'%url)
+           self.log.error(u'Python 返回URL：%s 数据失败'%url)
         else:
             self.log.info(u'Python 返回URL:%s 数据成功'%url)
-            return response.read()
+            return res.text
     def spider(self,area,urls):
         items = []
         for url in urls:
@@ -55,8 +57,8 @@ class getMvList(object):
             tags = soup.find_all('li',attrs={'name':'dmvLi'})
             for tag in tags:
                 item = Item()
-                item.top_num = tag.find('div',attrs={'class':'top_num'})
-                if tag.find('h3',attrs={'class':'desc_score'}).get_text():
+                item.top_num = tag.find('div',attrs={'class':'top_num'}).get_text()
+                if tag.find('h3',attrs={'class':'desc_score'}):
                     item.score = tag.find('h3',attrs={'class':'desc_score'}).get_text()
                 else:
                     item.score = tag.find('h3',attrs={'class':'asc_score'}).get_text()
